@@ -1,22 +1,44 @@
 import { Heart } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllMovies } from "../../Api/Api";
-import { useState } from "react";
+
 export default function MovieCard() {
   const [movies, setMovies] = useState([]);
-  // useApi
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchMovies() {
       const data = await getAllMovies();
-      //   console.log(data[0].id);
       setMovies(data);
     }
     fetchMovies();
   }, []);
 
+  const handleCategoryChange = (e) => {
+    const selected = e.target.value;
+    if (selected === "tv") {
+      navigate("/tv");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <section className="max-w-7xl mx-auto px-6 py-6">
-      <h2 className="text-2xl font-bold mb-6">Now Playing</h2>
+      <div className="head flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Now Playing</h2>
+        <select
+          name="Category"
+          id="Category"
+          defaultValue="movies"
+          onChange={handleCategoryChange}
+          className="bg-transparent border-none outline-none cursor-pointer font-medium text-sm text-black"
+        >
+          <option value="movies">Movie Shows</option>
+          <option value="tv">Tv Shows</option>
+        </select>
+      </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
         {movies.map((movie) => (
@@ -27,7 +49,11 @@ export default function MovieCard() {
             {/* image */}
             <div className="relative mb-5">
               <img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                    : "https://placehold.co/500x750/27272a/ffffff?text=No+Poster"
+                }
                 alt={movie.title}
                 className="w-full h-72 object-cover rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
               />
@@ -49,7 +75,7 @@ export default function MovieCard() {
               {/* date */}
               <div className="flex justify-between items-center mt-1">
                 <span className="text-gray-500 text-xs font-normal">
-                  {movie.release_date}
+                  {movie.release_date || "Unknown Date"}
                 </span>
                 {/* watchlist */}
                 <button className="cursor-pointer hover:scale-110 transition-transform">

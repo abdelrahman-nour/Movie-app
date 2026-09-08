@@ -1,4 +1,13 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Search() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/search?query=${searchQuery}`);
+  };
   return (
     <section className="w-full pt-6 pb-4">
       <div className="max-w-7xl mx-auto px-6">
@@ -10,11 +19,18 @@ export default function Search() {
             Millions of movies, TV shows and people to discover. Explore now.
           </p>
 
-          <form className="flex flex-col sm:flex-row gap-3 items-center w-full">
+          <form
+            className="flex flex-col sm:flex-row gap-3 items-center w-full"
+            onSubmit={handleSearch}
+          >
             <input
               type="search"
               placeholder="Search and explore...."
               className="w-full flex-1 bg-white text-black px-5 py-3.5 rounded-xl border border-transparent outline-none shadow-sm text-sm"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
             />
             <button
               type="submit"
