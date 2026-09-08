@@ -1,4 +1,15 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 export default function Search() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!searchTerm.trim() || !searchTerm){ return;}
+
+      navigate(`/search/${encodeURIComponent(searchTerm.trim())}`);
+
+  };
   return (
     <section className="w-full pt-6 pb-4">
       <div className="max-w-7xl mx-auto px-6">
@@ -9,10 +20,11 @@ export default function Search() {
           <p className="text-gray-700 text-sm md:text-base mb-6 font-medium">
             Millions of movies, TV shows and people to discover. Explore now.
           </p>
-
-          <form className="flex flex-col sm:flex-row gap-3 items-center w-full">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 items-center w-full">
             <input
               type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search and explore...."
               className="w-full flex-1 bg-white text-black px-5 py-3.5 rounded-xl border border-transparent outline-none shadow-sm text-sm"
             />
