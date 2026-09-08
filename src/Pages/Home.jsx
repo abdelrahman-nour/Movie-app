@@ -1,9 +1,11 @@
-import Layout from "../Component/Layout/Layout";
+import Search from "../Component/Search/Search.jsx"
+import MovieCard from "../Component/Cards/movieCard.jsx";
 
 export default function Home() {
   return (
     <div>
-      <Layout />
+      <Search />
+      <MovieCard />
     </div>
   );
 }

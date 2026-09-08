@@ -1,3 +1,3 @@
-export default function watchListCard() {
-  return <div>watchListCard</div>;
+export default function WatchListCard() {
+  return <div>WatchListCard</div>;
 }

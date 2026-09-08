@@ -1,3 +1,25 @@
-export default function pagination() {
-  return <div>pagination</div>;
+export default function Pagination({ currentPage, totalPages, onPageChange }) {
+  return (
+    <div className="flex justify-center items-center gap-3 mt-8 mb-8">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="px-4 py-2 rounded-md bg-yellow-400 disabled:opacity-50 cursor-pointer font-bold hover:scale-105 transition-all shadow-md"
+      >
+        Previous
+      </button>
+
+      <span className="font-semibold">
+        Page {currentPage} of {totalPages}
+      </span>
+
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="px-4 py-2 rounded-md bg-yellow-400 disabled:opacity-50 cursor-pointer font-bold hover:scale-105 transition-all shadow-md"
+      >
+        Next
+      </button>
+    </div>
+  );
 }
