@@ -2,21 +2,28 @@ import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllMovies } from "../../Api/Api";
+import Pagination from "../Common/Pagination.jsx";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 export default function MovieCard() {
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchMovies() {
       setIsLoading(true);
-      const data = await getAllMovies();
-      setMovies(data);
+      const data = await getAllMovies(page);
+      setMovies(data.results || []);
+      setTotalPages(data.total_pages || 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setIsLoading(false);
     }
     fetchMovies();
-  }, []);
+  }, [page]);
 
   const handleCategoryChange = (e) => {
     const selected = e.target.value;
@@ -28,15 +35,15 @@ export default function MovieCard() {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-6">
-      <div className="head flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Now Playing</h2>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Now Playing</h2>
         <select
           name="Category"
           id="Category"
           defaultValue="movies"
           onChange={handleCategoryChange}
-          className="bg-transparent border-none outline-none cursor-pointer font-medium text-sm text-black"
+          className="bg-transparent border border-gray-200 sm:border-none rounded-lg p-1.5 sm:p-0 outline-none cursor-pointer font-medium text-xs sm:text-sm text-black"
         >
           <option value="movies">Movie Shows</option>
           <option value="tv">Tv Shows</option>
@@ -44,7 +51,7 @@ export default function MovieCard() {
       </div>
 
       {isLoading ? (
-        <div className="text-center py-10">
+        <div className="text-center py-16">
           <div role="status">
             <svg
               aria-hidden="true"
@@ -66,52 +73,72 @@ export default function MovieCard() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-          {movies.map((movie) => (
-            <div
-              key={movie.id}
-              className="flex flex-col w-full cursor-pointer group"
-            >
-              {/* image */}
-              <div className="relative mb-5">
-                <img
-                  src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                      : "https://placehold.co/500x750/27272a/ffffff?text=No+Poster"
-                  }
-                  alt={movie.title}
-                  className="w-full h-72 object-cover rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-                />
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-5">
+            {movies.slice(0, 8).map((movie) => (
+              <div
+                key={movie.id}
+                className="flex flex-col w-full cursor-pointer group"
+              >
+                {/* image */}
+                <div className="relative mb-3 sm:mb-5 aspect-2/3 w-full">
+                  <img
+                    src={
+                      movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                        : "https://via.placeholder.com/500x750?text=No+Poster"
+                    }
+                    alt={movie.title}
+                    className="w-full h-full object-cover rounded-xl sm:rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
+                  />
 
-                {/* percentage */}
-                <div className="absolute -bottom-4 left-3 w-9 h-9 bg-black rounded-full border-2 border-green-500 flex items-center justify-center text-white font-bold">
-                  <span className="text-xs">
-                    {Math.round(movie.vote_average * 10)}
-                    <span className="align-top font-normal">%</span>
-                  </span>
+                  {/* circleRatingBadge*/}
+                  <div className="absolute -bottom-3 left-2 sm:-bottom-4 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full p-0.5 sm:p-1">
+                    <CircularProgressbar
+                      value={movie.vote_average * 10}
+                      text={`${Math.round(movie.vote_average * 10)}%`}
+                      styles={buildStyles({
+                        textSize: "34px",
+                        pathColor:
+                          movie.vote_average >= 7
+                            ? "#22c55e"
+                            : movie.vote_average >= 5
+                              ? "#eab308"
+                              : "#ef4444",
+                        trailColor: "#374151",
+                        textColor: "#fff",
+                      })}
+                    />
+                  </div>
+                </div>
+                {/* content */}
+                <div className="flex flex-col px-1">
+                  <h3 className="text-sm sm:text-base font-bold text-black group-hover:text-yellow-400 transition-colors truncate">
+                    {movie.title}
+                  </h3>
+
+                  <div className="flex justify-between items-center mt-1">
+                    <span className="text-gray-500 text-[11px] sm:text-xs font-normal">
+                      {movie.release_date || "N/A"}
+                    </span>
+                    {/* witchlist */}
+                    <button className="cursor-pointer hover:scale-110 transition-transform">
+                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-yellow-300 text-yellow-300" />
+                    </button>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
 
-              {/* title */}
-              <div className="flex flex-col px-1">
-                <h3 className="text-base font-bold text-black group-hover:text-yellow-400 transition-colors">
-                  {movie.title}
-                </h3>
-                {/* date */}
-                <div className="flex justify-between items-center mt-1">
-                  <span className="text-gray-500 text-xs font-normal">
-                    {movie.release_date || "Unknown Date"}
-                  </span>
-                  {/* watchlist */}
-                  <button className="cursor-pointer hover:scale-110 transition-transform">
-                    <Heart className="w-4 h-4 fill-yellow-300 text-yellow-300" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+          <div className="mt-8 flex justify-center overflow-x-auto w-full">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(newPage) => setPage(newPage)}
+            />
+          </div>
+        </>
       )}
     </section>
   );
