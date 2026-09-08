@@ -164,3 +164,24 @@ export async function getTvReviews(tvId) {
     return [];
   }
 }
+
+export async function getMovieDetails(id) {
+  try {
+    const res = await axios.get(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+}
+
+export async function getTvDetails(id) {
+  try {
+    const res = await axios.get(`${BASE_URL}/tv/${id}?api_key=${API_KEY}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+}
+

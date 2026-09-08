@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllMovies } from "../../Api/Api";
 import Pagination from "../Common/Pagination.jsx";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { Link } from "react-router-dom";
 import "react-circular-progressbar/dist/styles.css";
 
 export default function MovieCard() {
@@ -76,8 +77,9 @@ export default function MovieCard() {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-5">
             {movies.slice(0, 8).map((movie) => (
+              <Link to={`/movie/${movie.id}`} key={movie.id}>
               <div
-                key={movie.id}
+                
                 className="flex flex-col w-full cursor-pointer group"
               >
                 {/* image */}
@@ -128,6 +130,7 @@ export default function MovieCard() {
                   </div>
                 </div>
               </div>
+              </Link>
             ))}
           </div>
 
