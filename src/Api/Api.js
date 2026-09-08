@@ -40,3 +40,24 @@ export async function searchMovies(query, page = 1) {
     return { results: [], total_pages: 0 };
   }
 }
+
+export async function getMovieDetails(id) {
+  try {
+    const res = await axios.get(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+}
+
+export async function getTvDetails(id) {
+  try {
+    const res = await axios.get(`${BASE_URL}/tv/${id}?api_key=${API_KEY}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+}
+

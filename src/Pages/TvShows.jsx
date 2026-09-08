@@ -2,6 +2,7 @@ import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllTvShows } from "../Api/Api";
+import { Link } from "react-router-dom";
 
 export default function TvShows() {
   const [tvShows, setTvShows] = useState([]);
@@ -67,8 +68,8 @@ export default function TvShows() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
             {tvShows.map((tv) => (
+              <Link to={`/tv/${tv.id}`} key={tv.id}>
               <div
-                key={tv.id}
                 className="flex flex-col w-full cursor-pointer group"
               >
                 {/* image */}
@@ -109,6 +110,7 @@ export default function TvShows() {
                   </div>
                 </div>
               </div>
+              </Link>
             ))}
           </div>
         )}
