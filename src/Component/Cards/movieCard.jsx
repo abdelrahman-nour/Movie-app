@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllMovies } from "../../Api/Api";
 import Pagination from "../Common/Pagination.jsx";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { Link } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css";
 
 export default function MovieCard() {
