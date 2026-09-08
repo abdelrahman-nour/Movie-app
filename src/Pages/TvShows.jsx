@@ -2,7 +2,6 @@ import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllTvShows } from "../Api/Api";
-import Navbar from "../Component/Layout/Navbar";
 
 export default function TvShows() {
   const [tvShows, setTvShows] = useState([]);
@@ -28,8 +27,6 @@ export default function TvShows() {
 
   return (
     <>
-      <Navbar />
-
       <section className="max-w-7xl mx-auto px-6 py-6">
         <div className="head flex justify-between items-center mb-6 px-3 py-2">
           <h2 className="text-2xl font-bold">TV Shows</h2>

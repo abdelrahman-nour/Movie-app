@@ -1,11 +1,11 @@
-import Layout from "../Component/Layout/Layout";
-import Footer from "../Component/Layout/Footer.jsx";
+import Search from "../Component/Search/Search.jsx"
+import MovieCard from "../Component/Cards/movieCard.jsx";
 
 export default function Home() {
   return (
     <div>
-      <Layout />
-      <Footer />
+      <Search />
+      <MovieCard />
     </div>
   );
 }

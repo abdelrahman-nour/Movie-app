@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { searchMovies } from "../Api/Api";
-import Navbar from "../Component/Layout/Navbar";
 import { Heart } from "lucide-react";
 
 export default function SearchResults() {
@@ -36,8 +35,6 @@ export default function SearchResults() {
 
   return (
     <>
-      <Navbar />
-
       <section className="max-w-7xl mx-auto px-6 mt-6">
         {/* searchBtn */}
         <form onSubmit={handleSearch} className="flex gap-3 items-center mb-8">
@@ -58,7 +55,8 @@ export default function SearchResults() {
         </form>
 
         <h2 className="text-xl font-bold mb-6">
-          Search Results for : <span className="text-black">{query}</span>
+          Search Results for :{" "}
+          <span className="text-yellow-400 font-black">{query}</span>
         </h2>
 
         {isLoading ? (
