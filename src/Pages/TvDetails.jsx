@@ -20,9 +20,7 @@ function TVDetails() {
       showTvs();
     }, [id]);
 
-
   return (
-
     <>
         {isLoading ? (
           <div className="text-center py-10">
@@ -48,60 +46,60 @@ function TVDetails() {
           </div>
         ) :(
 
-      <div className="min-h-screen flex items-center justify-center bg-white p-6">
-      <div className="w-full max-w-6xl flex flex-col md:flex-row gap-10 items-center">
+      <div className="flex justify-center bg-white px-4 py-5 mt-3">
+      <div className="w-full max-w-5xl flex flex-col md:flex-row gap-6">
 
-        <div className="w-full md:w-[40%]">
+        <div className="w-full md:w-[35%]">
           <img
             src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`}
             alt={tv.name}
-            className="w-full max-w-[470px] mx-auto rounded-3xl shadow-lg"
+            className="w-full max-w-[300px] mx-auto rounded-2xl shadow-lg"
           />
         </div>
 
         <div className="flex-1 relative">
 
            <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform">
-            <Heart className=" sm:w-7 sm:h-7 fill-yellow-300 text-yellow-300" />
-          </button>
+              <Heart className="w-6 h-6 fill-yellow-300 text-yellow-300" />
+            </button>
 
-          <h1 className="text-2xl md:text-3xl font-bold mb-3">
+          <h1 className="text-xl md:text-2xl font-bold mb-2 pr-10">
             {tv.name}
           </h1>
 
-          <p className="text-gray-500 mb-7">
+          <p className="text-gray-500 mb-4 text-sm">
             {tv.first_air_date}
           </p>
 
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center gap-2 mb-5">
 
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star/>
+               <Star className="w-5 h-5 fill-zinc-900 text-zinc-900"/>
+               <Star className="w-5 h-5 fill-zinc-900 text-zinc-900"/>
+               <Star className="w-5 h-5 fill-zinc-900 text-zinc-900"/>
+               <Star className="w-5 h-5 fill-zinc-900 text-zinc-900"/>
+               <Star className="w-5 h-5"/>
 
-            <span className="text-lg text-gray-600">
+            <span className="text-base text-gray-600">
               {tv.vote_count}
             </span>
           </div>
 
-          <p className="text-gray-700 text-lg leading-8 mb-7">
+          <p className="text-gray-700 text-base leading-6 mb-5">
             {tv.overview}
           </p>
 
-          <div className="flex flex-wrap gap-4 mb-8">
+          <div className="flex flex-wrap gap-2 mb-5">
             {tv.genres.map((genre) => (
               <span
                 key={genre.id}
-                className="bg-yellow-400 px-7 py-3 rounded-full font-medium"
+                className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium"
               >
                 {genre.name}
               </span>
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-16 mb-8 text-lg">
+          <div className="flex flex-wrap gap-8 mb-5 text-base">
 
             <div>
               <span className="font-bold">Duration:</span>{" "}
@@ -118,16 +116,16 @@ function TVDetails() {
           </div>
 
           {tv.production_companies?.length > 0 && (
-            <div className="mb-7">
+            <div className="mb-5">
 
               {tv.production_companies[0].logo_path ? (
                 <img
                   src={`https://image.tmdb.org/t/p/w200${tv.production_companies[0].logo_path}`}
                   alt={tv.production_companies[0].name}
-                  className="w-52 h-auto"
+                  className="w-36 h-auto"
                 />
               ) : (
-                <p className="text-2xl font-bold">
+                <p className="text-xl font-bold">
                   {tv.production_companies[0].name}
                 </p>
               )}
@@ -140,9 +138,9 @@ function TVDetails() {
               href={tv.homepage}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 border border-yellow-300 px-6 py-3 rounded-full hover:bg-gray-100"
+              className="inline-flex items-center gap-2 border border-yellow-300 px-5 py-2 rounded-full hover:bg-gray-100 text-sm"
             >
-              Website <Link/>
+              Website <Link className="w-4 h-4"/>
             </a>
           )}
 

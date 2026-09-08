@@ -21,9 +21,8 @@ function MovieDetails() {
     }, [id]);
 
   return (
-
-    <>
-        {isLoading ? (
+  <>
+       {isLoading ? (
           <div className="text-center py-10">
             <div role="status">
               <svg
@@ -45,108 +44,105 @@ function MovieDetails() {
               <span className="sr-only">Loading...</span>
             </div>
           </div>
-        ) :(
+        ) : (
+      <div className="flex justify-center bg-white px-4 py-5 mt-3">
+        <div className="w-full max-w-5xl flex flex-col md:flex-row gap-6 ">
 
-        <div className="min-h-screen flex items-center justify-center bg-white p-6">
-      <div className="w-full max-w-6xl flex flex-col md:flex-row gap-10 items-center">
-
-        <div className="w-full md:w-[40%]">
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            className="w-full max-w-[470px] mx-auto rounded-3xl shadow-lg"
-          />
-        </div>
-
-        <div className="flex-1 relative">
-
-          <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform">
-            <Heart className="sm:w-7 sm:h-7 fill-yellow-300 text-yellow-300" />
-          </button>
-
-          <h1 className="text-2xl md:text-3xl font-bold mb-3">
-            {movie.title}
-          </h1>
-
-          <p className="text-gray-500 mb-7">
-            {movie.release_date}
-          </p>
-
-          <div className="flex items-center gap-4 mb-8">
-
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star className="fill-zinc-900 text-zinc-900"/>
-               <Star/>
-
-            <span className="text-lg text-gray-600">
-              {movie.vote_count}
-            </span>
+          <div className="w-full md:w-[35%]">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              className="w-full max-w-[300px] mx-auto rounded-2xl shadow-lg"
+            />
           </div>
 
-          <p className="text-gray-700 text-lg leading-8 mb-7">
-            {movie.overview}
-          </p>
+          <div className="flex-1 relative">
 
-          <div className="flex flex-wrap gap-4 mb-8">
-            {movie.genres.map((genre) => (
-              <span
-                key={genre.id}
-                className="bg-yellow-400 px-7 py-3 rounded-full font-medium"
-              >
-                {genre.name}
+            <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform">
+              <Heart className="w-6 h-6 fill-yellow-300 text-yellow-300" />
+            </button>
+
+            <h1 className="text-xl md:text-2xl font-bold mb-2 pr-10">
+              {movie.title}
+            </h1>
+
+            <p className="text-gray-500 mb-4 text-sm">
+              {movie.release_date}
+            </p>
+
+            <div className="flex items-center gap-2 mb-5">
+              <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+              <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+              <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+              <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+              <Star className="w-5 h-5" />
+
+              <span className="text-base text-gray-600">
+                {movie.vote_count}
               </span>
-            ))}
+            </div>
+
+            <p className="text-gray-700 text-base leading-6 mb-5">
+              {movie.overview}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mb-5">
+              {movie.genres.map((genre) => (
+                <span
+                  key={genre.id}
+                  className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium"
+                >
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-8 mb-5 text-base">
+              <div>
+                <span className="font-bold">Duration:</span>{" "}
+                {movie.runtime} Min.
+              </div>
+
+              <div>
+                <span className="font-bold">Languages:</span>{" "}
+                {movie.spoken_languages
+                  .map((language) => language.english_name)
+                  .join(", ")}
+              </div>
+            </div>
+
+            {movie.production_companies.length > 0 && (
+              <div className="mb-5">
+                {movie.production_companies[0].logo_path ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200${movie.production_companies[0].logo_path}`}
+                    alt={movie.production_companies[0].name}
+                    className="w-36 h-auto"
+                  />
+                ) : (
+                  <p className="text-xl font-bold">
+                    {movie.production_companies[0].name}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {movie.homepage && (
+              <a
+                href={movie.homepage}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 border border-yellow-300 px-5 py-2 rounded-full hover:bg-gray-100 text-sm"
+              >
+                Website <Link className="w-4 h-4"/>
+              </a>
+            )}
           </div>
-
-          <div className="flex flex-wrap gap-16 mb-8 text-lg">
-            <div>
-              <span className="font-bold">Duration:</span>{" "}
-              {movie.runtime} Min.
-            </div>
-
-            <div>
-              <span className="font-bold">Languages:</span>{" "}
-              {movie.spoken_languages
-                .map((language) => language.english_name)
-                .join(", ")}
-            </div>
-          </div>
-
-          {movie.production_companies.length > 0 && (
-            <div className="mb-7">
-              {movie.production_companies[0].logo_path ? (
-                <img
-                  src={`https://image.tmdb.org/t/p/w200${movie.production_companies[0].logo_path}`}
-                  alt={movie.production_companies[0].name}
-                  className="w-52 h-auto"
-                />
-              ) : (
-                <p className="text-2xl font-bold">
-                  {movie.production_companies[0].name}
-                </p>
-              )}
-            </div>
-          )}
-
-          {movie.homepage && (
-            <a
-              href={movie.homepage}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 border border-yellow-300 px-6 py-3 rounded-full hover:bg-gray-100"
-            >
-              Website <Link/>
-            </a>
-          )}
         </div>
       </div>
-    </div>
-
-        )}
-    </>
-  );
+    )}
+  </>
+);
 }
 
 export default MovieDetails;
