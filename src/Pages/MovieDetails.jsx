@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieDetails } from "../Api/Api";
 import { Heart, Star, Link } from "lucide-react";
-
 import Reviews from "../Component/Details/reviews";
 import Recommendations from "../Component/Details/recommendation";
 

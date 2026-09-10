@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getTvDetails } from "../Api/Api";
 import { Heart, Star, Link } from "lucide-react";
-
 import Recommendations from "../Component/Details/recommendation";
 import Reviews from "../Component/Details/reviews";
 
