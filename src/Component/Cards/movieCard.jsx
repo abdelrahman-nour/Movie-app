@@ -6,8 +6,10 @@ import Pagination from "../Common/Pagination.jsx";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { Link } from "react-router-dom";
 import "react-circular-progressbar/dist/styles.css";
+import { useWatchlist } from "../../context/WatchlistContext";
 
 export default function MovieCard() {
+  const { toggleWatchlist, isInWatchlist } = useWatchlist();
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -76,62 +78,87 @@ export default function MovieCard() {
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-5">
-            {movies.slice(0, 8).map((movie) => (
-              <Link to={`/movie/${movie.id}`} key={movie.id}>
-              <div
-                
-                className="flex flex-col w-full cursor-pointer group"
-              >
-                {/* image */}
-                <div className="relative mb-3 sm:mb-5 aspect-2/3 w-full">
-                  <img
-                    src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                        : "https://via.placeholder.com/500x750?text=No+Poster"
+            {movies.slice(0, 8).map((movie) => {
+              const inWatchlist = isInWatchlist(movie.id);
+
+              return (
+                <div
+                  key={movie.id}
+                  className="flex flex-col w-full cursor-pointer group"
+                  onClick={() => navigate(`/movie/${movie.id}`)}
+                  role="link"
+                  tabIndex={0}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      navigate(`/movie/${movie.id}`);
                     }
-                    alt={movie.title}
-                    className="w-full h-full object-cover rounded-xl sm:rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-                  />
-
-                  {/* circleRatingBadge*/}
-                  <div className="absolute -bottom-3 left-2 sm:-bottom-4 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full p-0.5 sm:p-1">
-                    <CircularProgressbar
-                      value={movie.vote_average * 10}
-                      text={`${Math.round(movie.vote_average * 10)}%`}
-                      styles={buildStyles({
-                        textSize: "34px",
-                        pathColor:
-                          movie.vote_average >= 7
-                            ? "#22c55e"
-                            : movie.vote_average >= 5
-                              ? "#eab308"
-                              : "#ef4444",
-                        trailColor: "#374151",
-                        textColor: "#fff",
-                      })}
+                  }}
+                >
+                  <div className="relative mb-3 sm:mb-5 aspect-2/3 w-full">
+                    <img
+                      src={
+                        movie.poster_path
+                          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                          : "https://via.placeholder.com/500x750?text=No+Poster"
+                      }
+                      alt={movie.title}
+                      className="w-full h-full object-cover rounded-xl sm:rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
                     />
-                  </div>
-                </div>
-                {/* content */}
-                <div className="flex flex-col px-1">
-                  <h3 className="text-sm sm:text-base font-bold text-black group-hover:text-yellow-400 transition-colors truncate">
-                    {movie.title}
-                  </h3>
 
-                  <div className="flex justify-between items-center mt-1">
-                    <span className="text-gray-500 text-[11px] sm:text-xs font-normal">
-                      {movie.release_date || "N/A"}
-                    </span>
-                    {/* witchlist */}
-                    <button className="cursor-pointer hover:scale-110 transition-transform">
-                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-yellow-300 text-yellow-300" />
-                    </button>
+                    <div className="absolute -bottom-3 left-2 sm:-bottom-4 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full p-0.5 sm:p-1">
+                      <CircularProgressbar
+                        value={movie.vote_average * 10}
+                        text={`${Math.round(movie.vote_average * 10)}%`}
+                        styles={buildStyles({
+                          textSize: "34px",
+                          pathColor:
+                            movie.vote_average >= 7
+                              ? "#22c55e"
+                              : movie.vote_average >= 5
+                                ? "#eab308"
+                                : "#ef4444",
+                          trailColor: "#374151",
+                          textColor: "#fff",
+                        })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col px-1">
+                    <h3 className="text-sm sm:text-base font-bold text-black group-hover:text-yellow-400 transition-colors truncate">
+                      {movie.title}
+                    </h3>
+
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-gray-500 text-[11px] sm:text-xs font-normal">
+                        {movie.release_date || "N/A"}
+                      </span>
+
+                      <button
+                        type="button"
+                        className="cursor-pointer hover:scale-110 transition-transform"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleWatchlist(movie);
+                        }}
+                        aria-label={
+                          inWatchlist ? "Remove from watchlist" : "Add to watchlist"
+                        }
+                      >
+                        <Heart
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                            inWatchlist
+                              ? "fill-yellow-300 text-yellow-300"
+                              : "text-yellow-300"
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-8 flex justify-center overflow-x-auto w-full">
