@@ -1,6 +1,4 @@
-// Place this file at: src/Component/Details/EmptyWatchList.jsx
 import { Link } from "react-router-dom";
-
 export default function EmptyWatchList() {
   return (
     <section className="mx-auto flex max-w-md flex-col items-center px-6 py-24 text-center">

@@ -1,4 +1,3 @@
-// Place this file at: src/Component/Layout/Footer.jsx
 import { Link } from "react-router-dom";
 
 const exploreLinks = [

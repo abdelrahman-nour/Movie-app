@@ -1,6 +1,4 @@
-// Place this file at: src/Component/Cards/watchListCard.jsx
 import { Link } from "react-router-dom";
-
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w342";
 
 export default function WatchListCard({ movie, onRemove }) {

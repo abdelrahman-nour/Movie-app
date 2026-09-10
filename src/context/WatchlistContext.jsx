@@ -1,4 +1,3 @@
-// Place this file at: src/context/WatchlistContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 
 const WatchlistContext = createContext(null);
