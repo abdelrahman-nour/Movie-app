@@ -5,8 +5,10 @@ import { searchMovies } from "../Api/Api";
 import "react-circular-progressbar/dist/styles.css";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import Pagination from "../Component/Common/Pagination.jsx";
+import { useWatchlist } from "../context/WatchlistContext";
 
 export default function SearchResults() {
+  const { toggleWatchlist, isInWatchlist } = useWatchlist();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const movieName = searchParams.get("query") || "";
@@ -97,7 +99,11 @@ export default function SearchResults() {
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-5">
-            {movies.map((movie) => (
+            {movies.map((movie) => {
+
+              const inWatchlist = isInWatchlist(movie.id);
+
+              return(
               <div
                 key={movie.id}
                 className="flex flex-col w-full cursor-pointer group"
@@ -136,7 +142,7 @@ export default function SearchResults() {
 
                 <div className="flex flex-col px-1">
                   <Link to={`/movie/${movie.id}`}>
-                    <h3 className="text-sm sm:text-base font-bold text-black group-hover:text-yellow-400 transition-colors truncate">
+                    <h3 className="text-sm sm:text-base font-bold group-hover:text-yellow-400 transition-colors truncate">
                       {movie.title}
                     </h3>
                   </Link>
@@ -146,13 +152,26 @@ export default function SearchResults() {
                       {movie.release_date || "N/A"}
                     </span>
 
-                    <button className="cursor-pointer hover:scale-110 transition-transform">
-                      <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-yellow-300 text-yellow-300" />
+                    <button className="cursor-pointer hover:scale-110 transition-transform" onClick={(event) => {
+                          event.stopPropagation();
+                          toggleWatchlist(movie);
+                        }}
+                        aria-label={
+                          inWatchlist
+                            ? "Remove from watchlist"
+                            : "Add to watchlist"
+                        }>
+                      <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                            inWatchlist
+                              ? "fill-yellow-300 text-yellow-300"
+                              : "text-yellow-300"
+                          }`} />
                     </button>
                   </div>
                 </div>
               </div>
-            ))}
+              )
+            })}
           </div>
 
           <div className="mt-8 flex justify-center overflow-x-auto w-full">
