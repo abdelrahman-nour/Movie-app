@@ -4,11 +4,17 @@ import { getTvDetails } from "../Api/Api";
 import { Heart, Star, Link } from "lucide-react";
 import Recommendations from "../Component/Details/recommendation";
 import Reviews from "../Component/Details/reviews";
+import { useWatchlist } from "../context/WatchlistContext";
+import { useTheme } from "../context/ThemeContext";
 
 function TVDetails() {
   const [tv, setTv] = useState(null);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const { isDark } = useTheme();
+  const { toggleWatchlist, isInWatchlist } = useWatchlist();
+
+  const inWatchlist = tv ? isInWatchlist(tv.id) : false;
 
   useEffect(() => {
     async function showTvs() {
@@ -49,7 +55,11 @@ function TVDetails() {
         </div>
       ) : (
         <>
-          <div className="flex justify-center bg-white px-4 py-5 mt-3">
+          <div
+            className={`flex justify-center px-4 py-5 mt-3 ${
+              isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+            }`}
+          >
             <div className="w-full max-w-7xl flex flex-col md:flex-row gap-6">
 
               {/* Poster */}
@@ -65,8 +75,20 @@ function TVDetails() {
               <div className="flex-1 relative">
 
                 {/* Heart */}
-                <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform">
-                  <Heart className="w-6 h-6 fill-yellow-300 text-yellow-300" />
+                <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform" onClick={(event) => {
+                          event.stopPropagation();
+                          toggleWatchlist(tv);
+                        }}
+                        aria-label={
+                          inWatchlist
+                            ? "Remove from watchlist"
+                            : "Add to watchlist"
+                        }>
+                  <Heart className={`w-6 h-6 ${
+                            inWatchlist
+                              ? "fill-yellow-300 text-yellow-300"
+                              : "text-yellow-300"
+                          }`} />
                 </button>
 
                 {/* Title */}
@@ -75,25 +97,44 @@ function TVDetails() {
                 </h1>
 
                 {/* Date */}
-                <p className="text-gray-500 mb-4 text-sm">
+                <p
+                  className={`mb-4 text-sm ${
+                    isDark ? "text-gray-400" : "text-gray-500"
+                  }`}
+                >
                   {tv.first_air_date}
                 </p>
 
                 {/* Rating */}
                 <div className="flex items-center gap-2 mb-5">
-                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
-                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
-                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
-                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
-                  <Star className="w-5 h-5" />
 
-                  <span className="text-base text-gray-600">
+                   {[1, 2, 3, 4, 5].map((star) => (
+
+                        <Star
+                            key={star}
+                           className={`w-5 h-5 ${
+                          star <= Math.round(tv.vote_average / 2)
+                              ? "fill-yellow-300 text-yellow-300"
+                              : "text-gray-400"
+                            }`}
+                        />
+                      ))}
+
+                  <span
+                    className={`text-base ${
+                      isDark ? "text-gray-300" : "text-gray-600"
+                    }`}
+                  >
                     {tv.vote_count}
                   </span>
                 </div>
 
                 {/* Overview */}
-                <p className="text-gray-700 text-base leading-6 mb-5">
+                <p
+                  className={`text-base leading-6 mb-5 ${
+                    isDark ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
                   {tv.overview}
                 </p>
 
@@ -102,7 +143,7 @@ function TVDetails() {
                   {tv.genres.map((genre) => (
                     <span
                       key={genre.id}
-                      className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium"
+                      className="bg-yellow-400 text-black px-4 py-2 rounded-full text-sm font-medium"
                     >
                       {genre.name}
                     </span>
@@ -155,7 +196,7 @@ function TVDetails() {
                     href={tv.homepage}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 border border-yellow-300 px-5 py-2 rounded-full hover:bg-gray-100 text-sm"
+                    className="inline-flex items-center gap-2 border border-yellow-300 px-5 py-2 rounded-full hover:bg-gray-100 hover:text-black text-sm"
                   >
                     Website
                     <Link className="w-4 h-4" />

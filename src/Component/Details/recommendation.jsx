@@ -17,10 +17,15 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useNavigate } from "react-router-dom";
 
+import { useTheme } from "../../context/ThemeContext";
+
 export default function Recommendations({ type, id }) {
   const [recommendations, setRecommendations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const { isDark } = useTheme();
 
   useEffect(() => {
     async function fetchRecommendations() {
@@ -45,14 +50,26 @@ export default function Recommendations({ type, id }) {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-      <div className="border-t border-gray-300 pt-5">
+      <div
+        className={`border-t pt-5 ${
+          isDark ? "border-gray-700" : "border-gray-300"
+        }`}
+      >
 
-        <h2 className="text-xl sm:text-2xl font-bold mb-5">
+        <h2
+          className={`text-xl sm:text-2xl font-bold mb-5 ${
+            isDark ? "text-white" : "text-black"
+          }`}
+        >
           Recommendations
         </h2>
 
         {isLoading ? (
-          <p className="text-center py-10">
+          <p
+            className={`text-center py-10 ${
+              isDark ? "text-gray-300" : "text-black"
+            }`}
+          >
             Loading recommendations...
           </p>
         ) : (
@@ -127,11 +144,19 @@ export default function Recommendations({ type, id }) {
                       </div>
                     </div>
 
-                    <h3 className="text-[11px] sm:text-xs font-bold text-black truncate mt-3 group-hover:text-yellow-400 transition-colors">
+                    <h3
+                      className={`text-[11px] sm:text-xs font-bold truncate mt-3 group-hover:text-yellow-400 transition-colors ${
+                        isDark ? "text-white" : "text-black"
+                      }`}
+                    >
                       {item.title || item.name}
                     </h3>
 
-                    <p className="text-[9px] sm:text-[10px] text-gray-500 mt-0.5">
+                    <p
+                      className={`text-[9px] sm:text-[10px] mt-0.5 ${
+                        isDark ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
                       {item.release_date ||
                         item.first_air_date ||
                         "N/A"}
