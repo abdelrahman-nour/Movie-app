@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieDetails } from "../Api/Api";
 import { Heart, Star, Link } from "lucide-react";
-
 import Reviews from "../Component/Details/reviews";
 import Recommendations from "../Component/Details/recommendation";
+import { useWatchlist } from "../context/WatchlistContext";
 import { useTheme } from "../context/ThemeContext";
 
 function MovieDetails() {
   const { id } = useParams();
-
   const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   const { isDark } = useTheme();
+  const { toggleWatchlist, isInWatchlist } = useWatchlist();
+
+ const inWatchlist = movie ? isInWatchlist(movie.id) : false;  
 
   useEffect(() => {
     async function showMovies() {
@@ -54,6 +55,7 @@ function MovieDetails() {
           </div>
         </div>
       ) : (
+
         <>
           <div
             className={`flex justify-center px-4 py-5 mt-3 ${
@@ -75,8 +77,20 @@ function MovieDetails() {
               <div className="flex-1 relative">
 
                 {/* Heart */}
-                <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform">
-                  <Heart className="w-6 h-6 fill-yellow-300 text-yellow-300" />
+                <button className="absolute right-0 top-0 text-3xl cursor-pointer hover:scale-110 transition-transform" onClick={(event) => {
+                          event.stopPropagation();
+                          toggleWatchlist(movie);
+                        }}
+                        aria-label={
+                          inWatchlist
+                            ? "Remove from watchlist"
+                            : "Add to watchlist"
+                        }>
+                  <Heart className={`w-6 h-6 ${
+                            inWatchlist
+                              ? "fill-yellow-300 text-yellow-300"
+                              : "text-yellow-300"
+                          }`}/>
                 </button>
 
                 {/* Title */}
@@ -95,11 +109,18 @@ function MovieDetails() {
 
                 {/* Rating */}
                 <div className="flex items-center gap-2 mb-5">
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5" />
+
+                   {[1, 2, 3, 4, 5].map((star) => (
+                    
+                    <Star
+                        key={star}
+                        className={`w-5 h-5 ${
+                          star <= Math.round(movie.vote_average / 2)
+                            ? "fill-yellow-300 text-yellow-300"
+                            : "text-gray-400"
+                        }`}
+                      />
+                    ))}
 
                   <span
                     className={`text-base ${
