@@ -5,14 +5,11 @@ import { Heart, Star, Link } from "lucide-react";
 
 import Recommendations from "../Component/Details/recommendation";
 import Reviews from "../Component/Details/reviews";
-import { useTheme } from "../context/ThemeContext";
 
 function TVDetails() {
   const [tv, setTv] = useState(null);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-
-  const { isDark } = useTheme();
 
   useEffect(() => {
     async function showTvs() {
@@ -35,11 +32,7 @@ function TVDetails() {
         </div>
       ) : (
         <>
-          <div
-            className={`flex justify-center px-4 py-5 mt-3 ${
-              isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-            }`}
-          >
+          <div className="flex justify-center bg-white px-4 py-5 mt-3">
             <div className="w-full max-w-7xl flex flex-col md:flex-row gap-6">
 
               {/* Poster */}
@@ -65,37 +58,25 @@ function TVDetails() {
                 </h1>
 
                 {/* Date */}
-                <p
-                  className={`mb-4 text-sm ${
-                    isDark ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
+                <p className="text-gray-500 mb-4 text-sm">
                   {tv.first_air_date}
                 </p>
 
                 {/* Rating */}
                 <div className="flex items-center gap-2 mb-5">
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                  <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
+                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
+                  <Star className="w-5 h-5 fill-zinc-900 text-zinc-900" />
                   <Star className="w-5 h-5" />
 
-                  <span
-                    className={`text-base ${
-                      isDark ? "text-gray-300" : "text-gray-600"
-                    }`}
-                  >
+                  <span className="text-base text-gray-600">
                     {tv.vote_count}
                   </span>
                 </div>
 
                 {/* Overview */}
-                <p
-                  className={`text-base leading-6 mb-5 ${
-                    isDark ? "text-gray-300" : "text-gray-700"
-                  }`}
-                >
+                <p className="text-gray-700 text-base leading-6 mb-5">
                   {tv.overview}
                 </p>
 
@@ -104,7 +85,7 @@ function TVDetails() {
                   {tv.genres.map((genre) => (
                     <span
                       key={genre.id}
-                      className="bg-yellow-400 text-black px-4 py-2 rounded-full text-sm font-medium"
+                      className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium"
                     >
                       {genre.name}
                     </span>
@@ -157,7 +138,7 @@ function TVDetails() {
                     href={tv.homepage}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 border border-yellow-300 px-5 py-2 rounded-full hover:bg-gray-100 hover:text-black text-sm"
+                    className="inline-flex items-center gap-2 border border-yellow-300 px-5 py-2 rounded-full hover:bg-gray-100 text-sm"
                   >
                     Website
                     <Link className="w-4 h-4" />
