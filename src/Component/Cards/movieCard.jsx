@@ -225,6 +225,7 @@ export default function MovieCard() {
               onPageChange={(newPage) =>
                 setPage(newPage)
               }
+              isDark={isDark}
             />
           </div>
         </>

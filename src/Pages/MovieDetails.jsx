@@ -110,8 +110,8 @@ function MovieDetails() {
                 {/* Rating */}
                 <div className="flex items-center gap-2 mb-5">
 
-                   {[1, 2, 3, 4, 5].map((star) => (
-                    
+                  {[1, 2, 3, 4, 5].map((star) => (
+            
                     <Star
                         key={star}
                         className={`w-5 h-5 ${

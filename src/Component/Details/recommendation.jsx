@@ -128,7 +128,7 @@ export default function Recommendations({ type, id }) {
                       <div className="absolute -bottom-2 left-1 w-7 h-7 sm:w-8 sm:h-8 bg-black rounded-full p-[2px]">
                         <CircularProgressbar
                           value={rating}
-                          text={`${rating}`}
+                          text={`${rating}%`}
                           styles={buildStyles({
                             textSize: "28px",
                             pathColor:
