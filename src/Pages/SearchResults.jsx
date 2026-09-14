@@ -4,7 +4,7 @@ import { Heart } from "lucide-react";
 import { searchMovies } from "../Api/Api";
 import "react-circular-progressbar/dist/styles.css";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
-import Pagination from "../Component/Common/Pagination.jsx";
+import Pagination from "../Component/Common/pagination.jsx";
 import { useWatchlist } from "../context/WatchlistContext";
 import { useTheme } from "../context/ThemeContext";
 export default function SearchResults() {
@@ -18,7 +18,7 @@ export default function SearchResults() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const {isDark} = useTheme();
+  const { isDark } = useTheme();
   useEffect(() => {
     setSearchInput(movieName);
     setPage(1);
@@ -100,59 +100,60 @@ export default function SearchResults() {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-5">
             {movies.map((movie) => {
-
               const inWatchlist = isInWatchlist(movie.id);
 
-              return(
-              <div
-                key={movie.id}
-                className="flex flex-col w-full cursor-pointer group"
-              >
-                <Link to={`/movie/${movie.id}`}>
-                  <div className="relative mb-3 sm:mb-5 aspect-2/3 w-full">
-                    <img
-                      src={
-                        movie.poster_path
-                          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                          : "https://via.placeholder.com/500x750?text=No+Poster"
-                      }
-                      alt={movie.title}
-                      className="w-full h-full object-cover rounded-xl sm:rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-                    />
-
-                    <div className="absolute -bottom-3 left-2 sm:-bottom-4 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full p-0.5 sm:p-1">
-                      <CircularProgressbar
-                        value={movie.vote_average * 10}
-                        text={`${Math.round(movie.vote_average * 10)}%`}
-                        styles={buildStyles({
-                          textSize: "34px",
-                          pathColor:
-                            movie.vote_average >= 7
-                              ? "#22c55e"
-                              : movie.vote_average >= 5
-                                ? "#eab308"
-                                : "#ef4444",
-                          trailColor: "#374151",
-                          textColor: "#fff",
-                        })}
-                      />
-                    </div>
-                  </div>
-                </Link>
-
-                <div className="flex flex-col px-1">
+              return (
+                <div
+                  key={movie.id}
+                  className="flex flex-col w-full cursor-pointer group"
+                >
                   <Link to={`/movie/${movie.id}`}>
-                    <h3 className="text-sm sm:text-base font-bold group-hover:text-yellow-400 transition-colors truncate">
-                      {movie.title}
-                    </h3>
+                    <div className="relative mb-3 sm:mb-5 aspect-2/3 w-full">
+                      <img
+                        src={
+                          movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                            : "https://via.placeholder.com/500x750?text=No+Poster"
+                        }
+                        alt={movie.title}
+                        className="w-full h-full object-cover rounded-xl sm:rounded-2xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
+                      />
+
+                      <div className="absolute -bottom-3 left-2 sm:-bottom-4 sm:left-3 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full p-0.5 sm:p-1">
+                        <CircularProgressbar
+                          value={movie.vote_average * 10}
+                          text={`${Math.round(movie.vote_average * 10)}%`}
+                          styles={buildStyles({
+                            textSize: "34px",
+                            pathColor:
+                              movie.vote_average >= 7
+                                ? "#22c55e"
+                                : movie.vote_average >= 5
+                                  ? "#eab308"
+                                  : "#ef4444",
+                            trailColor: "#374151",
+                            textColor: "#fff",
+                          })}
+                        />
+                      </div>
+                    </div>
                   </Link>
 
-                  <div className="flex justify-between items-center mt-1">
-                    <span className="text-gray-500 text-[11px] sm:text-xs font-normal">
-                      {movie.release_date || "N/A"}
-                    </span>
+                  <div className="flex flex-col px-1">
+                    <Link to={`/movie/${movie.id}`}>
+                      <h3 className="text-sm sm:text-base font-bold group-hover:text-yellow-400 transition-colors truncate">
+                        {movie.title}
+                      </h3>
+                    </Link>
 
-                    <button className="cursor-pointer hover:scale-110 transition-transform" onClick={(event) => {
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-gray-500 text-[11px] sm:text-xs font-normal">
+                        {movie.release_date || "N/A"}
+                      </span>
+
+                      <button
+                        className="cursor-pointer hover:scale-110 transition-transform"
+                        onClick={(event) => {
                           event.stopPropagation();
                           toggleWatchlist(movie);
                         }}
@@ -160,17 +161,20 @@ export default function SearchResults() {
                           inWatchlist
                             ? "Remove from watchlist"
                             : "Add to watchlist"
-                        }>
-                      <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                        }
+                      >
+                        <Heart
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                             inWatchlist
                               ? "fill-yellow-300 text-yellow-300"
                               : "text-yellow-300"
-                          }`} />
-                    </button>
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              )
+              );
             })}
           </div>
 
