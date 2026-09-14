@@ -6,7 +6,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import Pagination from "../Component/Common/Pagination.jsx";
 import { useWatchlist } from "../context/WatchlistContext";
-
+import { useTheme } from "../context/ThemeContext";
 export default function SearchResults() {
   const { toggleWatchlist, isInWatchlist } = useWatchlist();
   const [searchParams] = useSearchParams();
@@ -18,7 +18,7 @@ export default function SearchResults() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-
+  const {isDark} = useTheme();
   useEffect(() => {
     setSearchInput(movieName);
     setPage(1);
@@ -179,6 +179,7 @@ export default function SearchResults() {
               currentPage={page}
               totalPages={totalPages}
               onPageChange={(newPage) => setPage(newPage)}
+              isDark={isDark}
             />
           </div>
         </>
