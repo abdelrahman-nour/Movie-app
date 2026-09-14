@@ -4,11 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { getAllTvShows } from "../Api/Api";
 import { useWatchlist } from "../context/WatchlistContext";
 import { useTheme } from "../context/ThemeContext";
-import {
-  CircularProgressbar,
-  buildStyles,
-} from "react-circular-progressbar";
-import Pagination from "../Component/Common/Pagination.jsx";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import Pagination from "../Component/Common/pagination.jsx";
 
 export default function TvShows() {
   const [tvShows, setTvShows] = useState([]);
@@ -121,10 +118,7 @@ export default function TvShows() {
                   role="link"
                   tabIndex={0}
                   onKeyDown={(event) => {
-                    if (
-                      event.key === "Enter" ||
-                      event.key === " "
-                    ) {
+                    if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
                       navigate(`/tv/${tv.id}`);
                     }
@@ -153,8 +147,8 @@ export default function TvShows() {
                             tv.vote_average >= 7
                               ? "#22c55e"
                               : tv.vote_average >= 5
-                              ? "#eab308"
-                              : "#ef4444",
+                                ? "#eab308"
+                                : "#ef4444",
                           trailColor: "#374151",
                           textColor: "#fff",
                         })}

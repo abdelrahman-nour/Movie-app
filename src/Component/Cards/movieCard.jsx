@@ -2,7 +2,7 @@ import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllMovies } from "../../Api/Api";
-import Pagination from "../Common/Pagination.jsx";
+import Pagination from "../Common/pagination.jsx";
 import {
   CircularProgressbar,
   buildStyles,
